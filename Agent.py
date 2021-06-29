@@ -14,7 +14,7 @@ import torch.optim as optim
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class Agent():
-    """Deep Q-Network Agent """
+    """DDQN Agent utilzing an actor/critic nn. """
 
     def __init__(self, state_size, action_size, seed=0):
         """Initialize Agent
@@ -44,10 +44,6 @@ class Agent():
 
         # Memory buffer
         self.memory = ReplayBuffer(action_size, seed=seed)
-
-        # Make sure target is initialized with the same weight as the source
-        #self.hard_update(self.actor_target, self.actor_local)
-        #self.hard_update(self.critic_target, self.critic_local)
     
     def reset_noise(self):
         """ Reset noise"""
@@ -64,6 +60,7 @@ class Agent():
         """
         # save experience 
         self.memory.add(state, action, reward, next_state, done)
+        # Learn in batches of 4
         if len(self.memory) > self.memory.batch_size and step % 4 == 0:
             experiences = self.memory.get_random_sample()
             self.learn(experiences, 0.99) # discount factor
@@ -103,7 +100,10 @@ class Agent():
         self.update(self.critic_local, self.critic_target, 1e-3)
         self.update(self.actor_local, self.actor_target, 1e-3)
 
+        # reduce epsilon per learned event
         self.epsilon -= self.discount_factor
+
+        # Reset noise between learning events
         self.noise.reset()
 
     def update(self, local_model, target_model, tau):
@@ -117,11 +117,6 @@ class Agent():
         """
         for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
             target_param.data.copy_(tau*local_param.data + (1.0-tau)*target_param.data)
-
-    ## initialze the target network same as the source network
-    def hard_update(self, target, source):
-        for target_param, source_param in zip(target.parameters(), source.parameters()):
-            target_param.data.copy_(source_param.data)
     
     def get_action(self, state, add_noise=True):
         """Gets the action from the given state
@@ -133,9 +128,11 @@ class Agent():
         """
         state = torch.from_numpy(state).float().to(device)
         self.actor_local.eval()
-        with torch.no_grad():
+        
+        with torch.no_grad():               
             action = self.actor_local(state).cpu().data.numpy()
         self.actor_local.train()
+        # Add noise discounted by epsilon
         if add_noise:
             action += self.epsilon * self.noise.sample()
         return np.clip(action, -1, 1)

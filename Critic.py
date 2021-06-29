@@ -4,45 +4,37 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+# Util funtion
 def hidden_init(layer):
     fan_in = layer.weight.data.size()[0]
     lim = 1. / np.sqrt(fan_in)
     return (-lim, lim)
 
+# Params
+FC1_UNITS = 400         # Number of nodes in the first hidden layer
+FC2_UNITS = 300         # Number of nodes in the second hidden layer
+FC3_UNITS = 300         # Number of nodes in the third hidden layer
+
 class Critic(nn.Module):
-    """ Critic model for DDPG """
+    """ Critic (Value) model for DDPG """
 
     def __init__(self, state_size, action_size, seed=0):
-        """Constructor for QNetwork model to initialize states, actions and random seed
+        """Constructor for Critic model to initialize states, actions and random seed
         Args:
             state_size:  number of states
             action_size: number of actions
             seed: rng seed value
         """
-
         super(Critic, self).__init__()
-        fc1_units = 400
-        fc2_units = 300
-        fc3_units = 300
+
         self.seed = torch.manual_seed(seed)
-        self.bn = nn.BatchNorm1d(fc1_units)
-        self.fcs1 = nn.Linear(state_size, fc1_units)       # First Layer
-        self.fc2 = nn.Linear(fc1_units+action_size, fc2_units)  # Second Layer
-        self.fc3 = nn.Linear(fc2_units, fc3_units)                # Third Layer
-        self.fc4 = nn.Linear(fc3_units, 1)
+        self.bn = nn.BatchNorm1d(FC1_UNITS)                     # First layer normalization
+        self.fcs1 = nn.Linear(state_size, FC1_UNITS)            # First Layer
+        self.fc2 = nn.Linear(FC1_UNITS+action_size, FC2_UNITS)  # Second Layer
+        self.fc3 = nn.Linear(FC2_UNITS, FC3_UNITS)              # Third Layer
+        self.fc4 = nn.Linear(FC3_UNITS, 1)                      # Fourth layer
 
-
-        # fc1 - calculate uniform distribution of -1/Sqrt(fan-in fc1)
-        #fc1_fin = self.fc1.weight.data.size()[0]
-        #ud_fc1 = 1.0 / np.sqrt(fc1_fin)
-        #self.fc1.weight.data.uniform_(*(-ud_fc1, ud_fc1))
-
-        # fc2 - calcuate uniform distribution of -1/sqrt(fan_int fc2)
-        #fc2_fin = self.fc2.weight.data.size()[0]
-        #ud_fc2 = 1.0 / np.sqrt(fc2_fin)
-        #self.fc2.weight.data.uniform_(*(-ud_fc2, ud_fc2))
-
-        # fc3 - uniform distribution of fc3
+        # initialize layers
         self.fcs1.weight.data.uniform_(*hidden_init(self.fcs1))
         self.fc2.weight.data.uniform_(*hidden_init(self.fc2))
         self.fc3.weight.data.uniform_(*hidden_init(self.fc3))
