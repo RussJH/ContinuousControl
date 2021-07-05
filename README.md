@@ -36,7 +36,7 @@ For this implementation we will be following an implementation of a Deep Determi
  * Python 3+
  * PyTorch
  * A DRNLD Configured environment [Instructions here](https://github.com/udacity/deep-reinforcement-learning#dependencies)
- * A way to run Jupiter Nobebook like VSCode
+ * A way to run Jupiter Notebook like VSCode
  * A Unity Environment 
    * Linux: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher_Linux.zip)
    * Mac OSX: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher.app.zip)
@@ -44,7 +44,7 @@ For this implementation we will be following an implementation of a Deep Determi
    * Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher_Windows_x86_64.zip)
 
  Once you've downloaded the Environment, extract the contents in the root of the project (Example)
-  * ./ContinuousControl/Reacer_Data/
+  * ./ContinuousControl/Reacher_Data/
   * ./ContinuousControl/unityPlayer.dll
   * ./Reacher.exe
   
