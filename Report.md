@@ -64,15 +64,15 @@ Batch size | 64 |
 
 <img src="Images/ContinuousControl.png"/>
 
- > [Episode 100]	Average Score (Last 100 episodes): 2.0
- > [Episode 200]	Average Score (Last 100 episodes): 7.5
- > [Episode 300]	Average Score (Last 100 episodes): 11.4
- > [Episode 400]	Average Score (Last 100 episodes): 17.5
- > [Episode 500]	Average Score (Last 100 episodes): 22.0
- > [Episode 600]	Average Score (Last 100 episodes): 24.5
- > [Episode 700]	Average Score (Last 100 episodes): 24.9
- > [Episode 776]	Average Score (Last 100 episodes): 30.1
- > Solved in 775 episodes!	Average Score (Last 100 episodes)=30.1
+> * [Episode 100]	Average Score (Last 100 episodes): 2.0
+> * [Episode 200]	Average Score (Last 100 episodes): 7.5
+> * [Episode 300]	Average Score (Last 100 episodes): 11.4
+> * [Episode 400]	Average Score (Last 100 episodes): 17.5
+> * [Episode 500]	Average Score (Last 100 episodes): 22.0
+> * [Episode 600]	Average Score (Last 100 episodes): 24.5
+> * [Episode 700]	Average Score (Last 100 episodes): 24.9
+> * [Episode 776]	Average Score (Last 100 episodes): 30.1
+> * Solved in 775 episodes!	Average Score (Last 100 episodes)=30.1
  
 ## Future work
 
